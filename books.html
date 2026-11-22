@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 4b - Question 2</title>
+</head>
+<body>
+  <h2>Book Details</h2>
+  <div id="output">Loading...</div>
+
+  <script>
+    const out = document.getElementById("output");
+    const addText = (tag, text) => {
+      const el = document.createElement(tag);
+      el.textContent = text;
+      out.appendChild(el);
+    };
+    fetch("books.json")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load books.json");
+        return res.json();
+      })
+      .then(({ books }) => {
+        out.textContent = "";
+        addText("p", `(a) First Book Title: ${books[0].title}`);
+        addText("p", `(b) Second Book Author: ${books[1].author}`);
+        addText("p", "(c) Genres:");
+        books.forEach((b) => addText("li", `${b.title} — ${b.genres.join(", ")}`));
+      })
+      .catch((err) => {
+        out.textContent = `Error: ${err.message}`;
+      });
+  </script>
+</body>
+</html>
